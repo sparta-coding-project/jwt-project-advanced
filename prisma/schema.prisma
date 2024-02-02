@@ -40,8 +40,18 @@ model Resume {
   userId    Int
   title     String
   content   String
+  status    resumeStatus @default(APPLY)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   user Users @relation(fields: [userId], references: [userId])
 }
+
+enum resumeStatus{
+    APPLY
+    DROP
+    PASS
+    INTERVIEW1
+    INTERVIEW2
+    FINAL_PASS
+  }

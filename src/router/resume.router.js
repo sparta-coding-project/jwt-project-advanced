@@ -8,12 +8,13 @@ router
   .route("/resume")
   .post(authorization, async (req, res) => {
     const { user } = req;
-    const { title, content } = req.body;
+    const { title, content, status } = req.body;
     const newResume = await prisma.resume.create({
       data: {
         userId: user.userId,
         title: title,
         content: content,
+        status: status,
       },
     });
     if (newResume) {
