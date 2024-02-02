@@ -2,7 +2,9 @@ import { prisma } from "../utils/prisma/index.js";
 import { verifyAccessToken } from "../utils/acessToken.js";
 
 export default async (req, res, next) => {
+    console.log('안녕하세요')
   const { cookie } = req.headers;
+  console.log(req.headers.authorization)
   const accessToken = cookie.split("=")[1];
   const { userId, id } = verifyAccessToken(accessToken);
 
@@ -11,11 +13,10 @@ export default async (req, res, next) => {
       userId: +userId,
     },
   });
-
   if (user) {
     req.user = user;
     next();
   } else {
-    return res.status(401).json({ message: "유효하지 않은 토큰입니다." });
+    return res.status(401).json({ message: "로그인을 해주세요" });
   }
 };

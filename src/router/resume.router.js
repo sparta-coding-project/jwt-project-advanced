@@ -24,11 +24,15 @@ router
   })
   .get(authorization, async (req, res) => {
     const { user } = req;
+    const { orderKey, orderValue = "desc" } = req.query;
 
     const resumeList = await prisma.resume.findMany({
       where: {
-        userId: user.userId,
+        userId: orderKey,
       },
+      orderBy:{
+        createdAt: orderValue,
+      }
     });
 
     if (resumeList.length !== 0) {
@@ -111,7 +115,7 @@ router
       if (deleteUser) {
         console.log(deleteUser);
         return res.status(201).json({ message: "이력서 삭제가 완료되었습니다." });
-      }else{
+      } else {
         return res.status(400).json({ message: "이력서 조회에 실패하였습니다." });
       }
     } catch (err) {

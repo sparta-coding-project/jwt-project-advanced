@@ -5,8 +5,8 @@ import { prisma } from "../utils/prisma/index.js";
 const router = express.Router();
 
 router.get("/user", async (req, res) => {
-  const { cookie } = req.headers;
-  const accessToken = cookie.split("=")[1];
+  const cookie = req.cookies;
+  const {accessToken} = cookie;
 
   const userData = verifyAccessToken(accessToken);
 
@@ -17,9 +17,9 @@ router.get("/user", async (req, res) => {
   });
 
   if (specificInfo) {
-    return res.status(200).json({ 
-        message: `Welcome! ${specificInfo.id}`,
-        userInfo: specificInfo
+    return res.status(200).json({
+      message: `Welcome! ${specificInfo.id}`,
+      userInfo: specificInfo,
     });
   }
 });

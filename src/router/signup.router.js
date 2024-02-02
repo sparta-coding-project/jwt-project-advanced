@@ -1,6 +1,7 @@
 import express from "express";
 import { prisma } from "../utils/prisma/index.js";
 import { createUsersValidation } from "../utils/validator.js";
+import { hashPW } from "../utils/bcrypt.js";
 
 const router = express.Router();
 
@@ -24,11 +25,12 @@ router.post("/signup", async (req, res) => {
                 return res.json({error: "Duplicate EMAIL. Please use another EMAIL"})
             }
         }else{
+            const hashed = await hashPW(password)
             await prisma.users.create({
                 data: {
                     id,
                     email,
-                    password,
+                    password: hashed,
                 },
             });
             return res.status(201).json({ message: "Sign-up successfully" });

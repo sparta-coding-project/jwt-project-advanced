@@ -3,6 +3,7 @@ import { prisma } from "../utils/prisma/index.js";
 import cookieParser from "cookie-parser";
 import { createAccessToken } from "../utils/acessToken.js";
 import 'dotenv/config'
+import { comparePW } from "../utils/bcrypt.js";
 
 const router = express.Router();
 
@@ -11,16 +12,15 @@ router.get("/login", async (req, res) => {
 
     const specificUser = await prisma.users.findFirst({
         where: {
-            AND: [{ id: id }, { password: password }],
+            id: id
         },
     });
-    // const specificUser= 'hi'
 
-    if (specificUser) {
+    if (specificUser && await comparePW(password, specificUser.password)) {
         const userData = { userId:specificUser.userId, id: specificUser.id, role: specificUser.role}
         const accessToken = createAccessToken(userData);
-        res.cookie("accessToken", accessToken);
-        return res.status(201).json({
+        res.cookie('accessToken', accessToken);
+        return res.status(201).json({   
             message: "액세스 토큰이 발급되었습니다.",
             "accessToken": accessToken,
         })
