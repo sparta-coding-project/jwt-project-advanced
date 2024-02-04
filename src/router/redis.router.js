@@ -10,4 +10,9 @@ router.get("/get/:userId", async (req, res) => {
   return res.status(400).json({ message: "데이터가 없습니다." });
 });
 
+router.post("/set", async (req, res)=>{
+    const {userId, token} = req.query;
+    await redisClient.set(userId+"", token)
+})
+
 export default router;
