@@ -13,6 +13,7 @@ router.get("/get/:userId", async (req, res) => {
 router.post("/set", async (req, res)=>{
     const {userId, token} = req.query;
     await redisClient.set(userId+"", token)
+    return res.status(201).json({message: "setting data in redis"})
 })
 
 export default router;
