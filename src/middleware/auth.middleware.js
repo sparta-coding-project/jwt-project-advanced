@@ -1,22 +1,33 @@
 import { prisma } from "../utils/prisma/index.js";
-import { verifyAccessToken } from "../utils/acessToken.js";
+import { verifyToken } from "../utils/token.js";
+import redisClient from "../utils/redisClient.js";
+import { tokenGenerator } from "../utils/token.js";
 
-export default async (req, res, next) => {
-    console.log('안녕하세요')
-  const { cookie } = req.headers;
-  console.log(req.headers.authorization)
-  const accessToken = cookie.split("=")[1];
-  const { userId, id } = verifyAccessToken(accessToken);
+const verifyRefresh = (req, res) => {
 
-  const user = await prisma.users.findFirst({
-    where: {
-      userId: +userId,
-    },
-  });
-  if (user) {
-    req.user = user;
-    next();
-  } else {
-    return res.status(401).json({ message: "로그인을 해주세요" });
+}
+
+const authorization = async (req, res, next) => {
+  try {
+    let { accessToken } = req.cookies;
+
+    const { userId, id } = verifyToken(accessToken);
+
+    const user = await prisma.users.findFirst({
+      where: {
+        userId: +userId,
+      },
+    });
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      return res.status(401).json({ message: "로그인을 해주세요" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Failed verifying Access Token" });
   }
 };
+
+export default authorization;

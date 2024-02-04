@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyAccessToken } from "../utils/acessToken.js";
+import { verifyToken } from "../utils/token.js";
 import { prisma } from "../utils/prisma/index.js";
 
 const router = express.Router();
