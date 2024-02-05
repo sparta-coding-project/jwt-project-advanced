@@ -3,11 +3,15 @@
 ## Skills
 
 - express
-- jwt
+- jsonwebtoken
 - redis
 - mysql
 - prisma
 - bcrypt
+- joi
+
+## Server
+[http://35.199.172.246:3002](http://35.199.172.246:3002)
 
 ## API 명세서
 
