@@ -41,18 +41,18 @@
 - 회원가입 - `POST` /api/signup
 
   - request
-    ```json
+    ```js
     { id, email, password }
     ```
   - response
-    ```json
+    ```js
     { userId, id, email, password, createdAt, updatedAt }
     ```
 
 - 로그인 - `POST` /api/login
 
   - request
-    ```json
+    ```js
     { id, password }
     ```
   - response
