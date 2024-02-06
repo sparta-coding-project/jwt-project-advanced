@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,46 +9,46 @@ datasource db {
 
 model Users {
   userId    Int       @id @unique @default(autoincrement())
-  id        String    @unique
+  username        String    @unique
   email     String    @unique
   password  String
   role      String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
-  userInfo  UserInfo?
   resume    Resume[]
-}
-
-model UserInfo {
-  userInfoId Int      @id @default(autoincrement())
-  userId     Int      @unique
-  id         String   @unique
-  email      String   @unique
-  gender     String
-  age        Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
-
-  user Users @relation(fields: [userId], references: [userId])
+  // UserInfo  UserInfo?
 }
 
 model Resume {
-  resumeId  Int      @id @unique @default(autoincrement())
+  resumeId  Int          @id @unique @default(autoincrement())
   userId    Int
   title     String
   content   String
   status    resumeStatus @default(APPLY)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @default(now()) @updatedAt
+  user      Users        @relation(fields: [userId], references: [userId])
 
-  user Users @relation(fields: [userId], references: [userId])
+  @@index([userId], map: "Resume_userId_fkey")
 }
 
-enum resumeStatus{
-    APPLY
-    DROP
-    PASS
-    INTERVIEW1
-    INTERVIEW2
-    FINAL_PASS
-  }
+// model UserInfo {
+//   userInfoId Int      @id @default(autoincrement())
+//   userId     Int      @unique
+//   id         String   @unique
+//   email      String   @unique
+//   gender     String
+//   age        Int
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @default(now())
+//   Users      Users    @relation(fields: [userId], references: [userId])
+// }
+
+enum resumeStatus {
+  APPLY
+  DROP
+  PASS
+  INTERVIEW1
+  INTERVIEW2
+  FINAL_PASS
+}

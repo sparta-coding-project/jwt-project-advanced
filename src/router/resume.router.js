@@ -25,25 +25,25 @@ router
   })
   .get(authorization, async (req, res) => {
     const { user } = req;
-    const { orderKey, orderValue = "desc" } = req.query;
+    const { orderKey = 'resumeId', orderValue = "desc" } = req.query;
 
     const resumeList = await prisma.resume.findMany({
       where: {
         userId: orderKey,
       },
       orderBy:{
-        createdAt: orderValue,
+        [orderKey]: orderValue,
       }
     });
 
     if (resumeList.length !== 0) {
       return res.status(200).json({
-        message: `${user.id}의 이력서 목록 조회가 완료되었습니다.`,
+        message: `${user.username}의 이력서 목록 조회가 완료되었습니다.`,
         resumeList,
       });
     } else {
       return res.status(400).json({
-        message: `${user.id}의 이력서 목록이 없습니다.`,
+        message: `${user.username}의 이력서 목록이 없습니다.`,
       });
     }
   });

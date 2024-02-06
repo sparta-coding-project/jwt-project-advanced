@@ -11,13 +11,14 @@ const authorization = async (req, res, next) => {
   try {
     let { accessToken } = req.cookies;
 
-    const { userId, id } = verifyToken(accessToken);
+    const { userId } = verifyToken(accessToken);
 
     const user = await prisma.users.findFirst({
       where: {
         userId: +userId,
       },
     });
+    
     if (user) {
       req.user = user;
       next();

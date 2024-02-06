@@ -13,6 +13,7 @@
   "dependencies": {
     "@jest/globals": "^29.7.0",
     "@prisma/client": "^5.8.1",
+    "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "bunyan": "^1.8.15",
     "cookie-parser": "^1.4.6",
