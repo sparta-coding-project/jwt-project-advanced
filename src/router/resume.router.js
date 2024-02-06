@@ -1,6 +1,7 @@
 import express from "express";
 import authorization from "../middleware/auth.middleware.js";
 import { prisma } from "../utils/prisma/index.js";
+import { resumeValidation } from "../utils/validator.js";
 
 const router = express.Router();
 
@@ -74,7 +75,18 @@ router
       const { user } = req;
       console.log(user);
       const { resumeId } = req.params;
-      const { title, content } = req.body;
+      const { title, content, status } = req.body;
+      await resumeValidation.validate(req.body);
+
+      const specificResume = await prisma.resume.findFirst({
+        where:{
+          resumeId: resumeId
+        }
+      })
+
+      if (!specificResume) return res.status(400).json({
+        message: "이력서가 존재하지 않습니다."
+      })
 
       const updateResume = await prisma.resume.update({
         data: {
