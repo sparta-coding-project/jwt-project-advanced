@@ -8,6 +8,6 @@ export const createUsersValidation = Joi.object().keys({
 })
 
 export const loginValidation = Joi.object().keys({
-    id: Joi.string().required(),
+    email: Joi.string().email().required(),
     password: Joi.string().min(6).max(45).required()
 })

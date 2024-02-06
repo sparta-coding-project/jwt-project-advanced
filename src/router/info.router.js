@@ -18,7 +18,7 @@ router.get("/user", async (req, res) => {
 
   if (specificInfo) {
     return res.status(200).json({
-      message: `Welcome! ${specificInfo.id}`,
+      message: `Welcome! ${specificInfo.username}`,
       userInfo: specificInfo,
     });
   }

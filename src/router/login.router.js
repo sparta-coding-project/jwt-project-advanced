@@ -11,11 +11,11 @@ const router = express.Router();
 
 router.post("/login", async (req, res) => {
     try{
-        const { username, password } = req.body;
+        const { email, password } = req.body;
         await loginValidation(req.body)
         const specificUser = await prisma.users.findFirst({
             where: {
-                username: username
+                email: email
             },
         });
     
