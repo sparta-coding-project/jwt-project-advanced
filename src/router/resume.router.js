@@ -73,14 +73,13 @@ router
   .patch(authorization, async (req, res) => {
     try {
       const { user } = req;
-      console.log(user);
       const { resumeId } = req.params;
       const { title, content, status } = req.body;
       await resumeValidation.validate(req.body);
 
       const specificResume = await prisma.resume.findFirst({
         where:{
-          resumeId: resumeId
+          resumeId: +resumeId
         }
       })
 
@@ -119,20 +118,30 @@ router
     try {
       const { user } = req;
       const { resumeId } = req.params;
+
+      const specificResume = await prisma.resume.findFirst({
+        where: {
+          resumeId: +resumeId
+        }
+      })
+      
+      if (!specificResume) return res.status(400).json({
+        message: "이력서가 존재하지 않습니다."
+      })
+
       const deleteUser = await prisma.resume.delete({
         where: {
           resumeId: +resumeId,
           userId: user.userId,
         },
       });
+
       if (deleteUser) {
-        console.log(deleteUser);
         return res.status(201).json({ message: "이력서 삭제가 완료되었습니다." });
       } else {
         return res.status(400).json({ message: "이력서 조회에 실패하였습니다." });
       }
     } catch (err) {
-      console.log(err);
       return res.status(401).json({ message: "삭제할 권한이 없습니다." });
     }
   });
