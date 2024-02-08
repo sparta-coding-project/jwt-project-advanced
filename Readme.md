@@ -76,7 +76,7 @@
     { userId, id, email, password, createdAt, updatedAt }
     ```
 
-- 이력서 생성 - `POST` /api/resume
+- 이력서 생성 - `POST` /api/resumes
 
   - request
     ```js
@@ -91,7 +91,7 @@
     { message: “이력서 생성이 완료되었습니다” }
     ```
 
-- 이력서 목록 조회 - `GET` /api/resume
+- 이력서 목록 조회 - `GET` /api/resumes
 
   - request
     ```js
@@ -102,7 +102,7 @@
     { resumeId, title, content, status, createdAt, updatedAt }
     ```
 
-- 이력서 수정 - `PATCH` /api/resume
+- 이력서 수정 - `PATCH` /api/resumes
 
   - request
     ```js
@@ -116,7 +116,7 @@
     [{ resumeId, title, content, status, createdAt, updatedAt }]
     ```
 
-- 이력서 상세 조회 - `GET` /api/resume/:resumeId
+- 이력서 상세 조회 - `GET` /api/resumes/:resumeId
 
   - request
     ```js
@@ -128,7 +128,7 @@
     { resumeId, title, content, status, createdAt, updatedAt }
     ```
 
-- 이력서 삭제 - `DELETE` /api/resume/:resumeId
+- 이력서 삭제 - `DELETE` /api/resumes/:resumeId
   - request
     ```js
     //headers.cookie
