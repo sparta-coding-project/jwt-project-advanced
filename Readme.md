@@ -109,7 +109,7 @@
     // headers.cookie
     { accessToken, refreshToken }
     // body
-    { title, content }
+    { title, content, status }
     ```
   - response
     ```js
