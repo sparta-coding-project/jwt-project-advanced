@@ -2,7 +2,7 @@ import redisClient from "./redisClient.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-export const tokenGenerator =(res, specificUser) => {
+export const tokenGenerator = (res, specificUser) => {
   const userData = {
     userId: specificUser.userId,
     id: specificUser.id,
@@ -10,16 +10,16 @@ export const tokenGenerator =(res, specificUser) => {
   };
   const accessToken = createAccessToken(userData);
   const refreshToken = createRefreshToken(userData);
-  res.cookie("accessToken", accessToken);
-  res.cookie("refreshToken", refreshToken);
+  res.cookie("accessToken", `${accessToken}`);
+  res.cookie("refreshToken", `${refreshToken}`);
 
-  redisClient.set(userData.userId+"", refreshToken);
+  redisClient.set(userData.userId + "", refreshToken);
 
   return {
     accessToken,
-    refreshToken
-  }
-}
+    refreshToken,
+  };
+};
 
 export const createAccessToken = (userData) => {
   const accessToken = jwt.sign(
@@ -27,7 +27,7 @@ export const createAccessToken = (userData) => {
     process.env.ACCESS_TOKEN_SECRET_KEY,
     {
       algorithm: "HS512",
-      expiresIn: "1d",
+      expiresIn: "1h",
     }
   );
   return accessToken;
@@ -42,9 +42,16 @@ export const createRefreshToken = (userData) => {
 };
 
 export const verifyToken = (token) => {
-  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, {
-    algorithms: "HS512",
-  });
-  return decoded;
+  try{
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, {
+      algorithms: "HS512",
+    });
+    return decoded;
+  }catch(err){
+    throw {
+      name: err.name,
+      message: err.message,
+      expiredAt: err.expiredAt
+    }
+  }
 };
-

@@ -7,28 +7,27 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
     try {
-        const { id, email, password } = req.body;
+        const { username, email, password } = req.body;
         // validation
         await createUsersValidation.validateAsync(req.body);
         // find specific user data
         const specificUser = await prisma.users.findFirst({
-            where: { 
-                OR:[{id: id}, {email: email}]
+            where: {
+                email:email
             },
         });
         if (specificUser){
-            if (specificUser.id === id && specificUser.email === email){
+            if (specificUser.username === username && specificUser.email === email)
                 return res.json({error: "Duplicate ID and EMAIL. Please use another ID and EMAIL"});
-            }else if (specificUser.id === id) {
+            if (specificUser.username === username) 
                 return res.json({error: "Duplicate ID. Please use another ID"});
-            } else if (specificUser.email === email) {
-                return res.json({error: "Duplicate EMAIL. Please use another EMAIL"})
-            }
+            if (specificUser.email === email) 
+                return res.json({error: "Duplicate EMAIL. Please use another EMAIL"});
         }else{
             const hashed = await hashPW(password)
             await prisma.users.create({
                 data: {
-                    id,
+                    username,
                     email,
                     password: hashed,
                 },

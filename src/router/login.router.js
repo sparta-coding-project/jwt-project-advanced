@@ -12,7 +12,8 @@ const router = express.Router();
 router.post("/login", async (req, res) => {
     try{
         const { email, password } = req.body;
-        await loginValidation(req.body)
+        await loginValidation.validateAsync(req.body)
+
         const specificUser = await prisma.users.findFirst({
             where: {
                 email: email
@@ -20,7 +21,7 @@ router.post("/login", async (req, res) => {
         });
     
         if (specificUser && await comparePW(password, specificUser.password)) {
-            const tokens = await tokenGenerator(res, specificUser);
+            const tokens = tokenGenerator(res, specificUser);
             return res.status(201).json({
                 message: "액세스 토큰이 발급되었습니다.",
                 ...tokens
@@ -29,7 +30,8 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({message: "아이디 혹은 비밀번호가 틀렸습니다."})
         }
     }catch(err){
-
+        const {message} = err.details[0]
+        return res.status(400).json({message})
     }
 });
 
