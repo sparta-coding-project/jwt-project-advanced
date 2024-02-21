@@ -1,27 +1,32 @@
 import { prisma } from "../utils/prisma/index.js";
-import { verifyToken } from "../utils/token.js";
 
 const authorization = async (req, res, next) => {
   try {
-    // console.log(req)
-    const { accessToken } = req.cookies;
-  
-    const { userId } = verifyToken(accessToken);
+    const { userId, email } = req.session.user;
+    console.log("auth;:::::", userId, email);
 
-    const user = await prisma.users.findFirst({
+    const specificUser = await prisma.users.findFirst({
       where: {
-        userId: +userId,
+        AND: [
+          {
+            userId: +userId,
+          },
+          {
+            email: email,
+          },
+        ],
       },
     });
-    
-    if (user) {
-      req.user = user;
+
+    if (specificUser) {
+      req.user = specificUser;
       next();
     } else {
       return res.status(401).json({ message: "로그인을 해주세요" });
     }
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    console.log(error);
+    return res.status(400).json({ error: error });
   }
 };
 

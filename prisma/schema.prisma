@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   userId    Int      @id @unique @default(autoincrement())
-  username  String   @unique
+  username  String   
   email     String   @unique
   password  String
   role      String?
@@ -27,7 +27,7 @@ model Resume {
   status    resumeStatus @default(APPLY)
   createdAt DateTime     @default(now())
   updatedAt DateTime     @default(now()) @updatedAt
-  user      Users        @relation(fields: [userId], references: [userId])
+  user      Users        @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@index([userId], map: "Resume_userId_fkey")
 }

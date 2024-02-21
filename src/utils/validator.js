@@ -15,7 +15,7 @@ export const createUsersValidation = Joi.object().keys({
   }),
 });
 
-export const loginValidation = Joi.object().keys({
+export const signinValidation = Joi.object().keys({
   email: Joi.string().email().required().messages({
     "string.email": "이메일을 입력해주세요."
   }),
