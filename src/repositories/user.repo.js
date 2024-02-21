@@ -5,7 +5,6 @@ export default class UserRepository {
     this.prisma = prisma;
   }
 
-
   getUser = async (userData) => {
     const user = await this.prisma.users.findFirst({
       select: {
@@ -13,6 +12,7 @@ export default class UserRepository {
         username: true,
         email: true,
         role: true,
+        password:true,
       },
       where: {
         ...userData,
@@ -44,5 +44,3 @@ export default class UserRepository {
     return deleteUser;
   };
 }
-
-// export default UserRepository;

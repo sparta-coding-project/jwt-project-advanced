@@ -3,7 +3,6 @@ import { prisma } from "../utils/prisma/index.js";
 const authorization = async (req, res, next) => {
   try {
     const { userId, email } = req.session.user;
-    console.log("auth;:::::", userId, email);
 
     const specificUser = await prisma.users.findFirst({
       where: {

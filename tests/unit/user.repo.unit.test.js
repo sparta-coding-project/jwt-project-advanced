@@ -1,20 +1,20 @@
-import { describe } from "@jest/globals";
-import UserRepository from "../src/repositories/user.repo.js";
-import UserService from "../src/services/user.service.js";
-import { prisma } from "../src/utils/prisma/index.js";
+import { describe, jest } from "@jest/globals";
+import UserRepository from "../../src/repositories/user.repo.js";
+import UserService from "../../src/services/user.service.js";
 
-let mockPrisma = {
+const mockPrisma = {
   users: {
-    findMany: jest.fn(),
-    findUnique: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+    findFirst: jest.fn()
   },
 };
 
+const userRepository = new UserRepository(mockPrisma);
+
 describe("UserReopsitory", () => {
-  const userRepository = new UserRepository(mockPrisma);
+
+  beforeEach(() => {
+    jest.resetAllMocks(); // 모든 Mock을 초기화합니다.
+  })
 
   test("getUser", async () => {
     const userData = {
