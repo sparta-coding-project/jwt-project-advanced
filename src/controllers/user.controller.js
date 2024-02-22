@@ -8,6 +8,7 @@ export default class UserController {
       await this.userService.signup(req.body);
       return res.status(201).json({ message: "Sign-up successfully" });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   };
@@ -25,7 +26,7 @@ export default class UserController {
       }
       return res.status(200).json({ message: "sign-in successfully" });
     } catch (error) {
-    //   res.status(404).json({ message: "error" });
+      //   res.status(404).json({ message: "error" });
       next(error);
     }
   };

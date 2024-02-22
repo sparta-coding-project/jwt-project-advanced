@@ -24,7 +24,7 @@ export default class UserService {
           message: "Duplicate EMAIL. Please use another EMAIL",
         };
     } else {
-      await this.userRepository.createUser(data);
+      return await this.userRepository.createUser(data);
     }
   };
 
