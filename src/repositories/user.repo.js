@@ -1,19 +1,10 @@
-import { hashPW } from "../utils/bcrypt.js";
-
 export default class UserRepository {
-  constructor(prisma) {
-    this.prisma = prisma;
+  constructor(dataSource) {
+    this.dataSource = dataSource;
   }
 
   getUser = async (userData) => {
-    const user = await this.prisma.users.findFirst({
-      select: {
-        userId: true,
-        username: true,
-        email: true,
-        role: true,
-        password:true,
-      },
+    const user = await this.dataSource.getRepository("Users").findOne({
       where: {
         ...userData,
       },
@@ -21,22 +12,18 @@ export default class UserRepository {
     return user;
   };
 
-  createUser = async (data) => {
-    const { username, email, password } = data;
-    const hashed = await hashPW(password);
-    const newUser = await this.prisma.users.create({
-      data: {
-        username,
-        email,
-        password: hashed,
-      },
+  createUser = async ({ username, email, password }) => {
+    const newUser = await this.dataSource.getRepository("Users").create({
+      username,
+      email,
+      password,
     });
     return newUser;
   };
 
   deleteUser = async (data) => {
     const { userId } = data;
-    const deleteUser = await this.prisma.users.delete({
+    const deleteUser = await this.dataSource.getRepository("Users").remove({
       where: {
         userId: +userId,
       },

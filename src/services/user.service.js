@@ -1,6 +1,6 @@
 import UserRepository from "../repositories/user.repo.js";
 import { createUsersValidation, signinValidation } from "../utils/validator.js";
-import { comparePW } from "../utils/bcrypt.js";
+import { comparePW, hashPW } from "../utils/bcrypt.js";
 
 export default class UserService {
   constructor(userRepository) {
@@ -24,7 +24,8 @@ export default class UserService {
           message: "Duplicate EMAIL. Please use another EMAIL",
         };
     } else {
-      return await this.userRepository.createUser(data);
+        const newUser = { username, email, password: hashPW(password)}
+      return await this.userRepository.createUser(newUser);
     }
   };
 

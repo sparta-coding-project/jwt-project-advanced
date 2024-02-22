@@ -1,13 +1,14 @@
 import { DataSource } from "typeorm"
+import config from '../../ormconfig.json' assert{ type: "json"};
 
-export const dataSource = new DataSource({
-    type: "mysql",
-    url: "mysql://root:1234@172.17.0.2:3306/jwt",
-    synchronize: true,
-    logging: true,
-    entities: [],
-    subscribers: [],
-    migrations: [],
-})
+export const dataSource = new DataSource(config);
 
-dataSource.initialize();
+export const connectDB = async () => {
+    await dataSource.initialize()
+    .then(() => console.log('mysql 연결 완료'));
+}
+
+export const disconnectDB = async () => {
+    await dataSource.destroy()
+    .then(() => console.log('mysql 연결 해제'))
+}

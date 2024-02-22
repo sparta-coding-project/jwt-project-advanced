@@ -1,13 +1,13 @@
 import ResumeController from '../controllers/resume.controller.js';
 import ResumeService from '../services/resume.service.js'
 import ResumeRepository from '../repositories/resume.repo.js';
-import { prisma } from '../utils/prisma/index.js';
 import express from 'express';
 import authorization from '../middleware/auth.middleware.js';
+import { dataSource } from '../typeorm/index.js';
 
 const router = express.Router();
 
-const resumeRepository = new ResumeRepository(prisma);
+const resumeRepository = new ResumeRepository(dataSource);
 const resumeService = new ResumeService(resumeRepository);
 const resumeController = new ResumeController(resumeService);
 

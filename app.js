@@ -7,8 +7,10 @@ import resumeRouter from "./src/router/resume.router.js"
 import errorHandleMiddleware from "./src/middleware/error-handle.middleware.js";
 
 import "dotenv/config";
+import { connectDB, disconnectDB } from "./src/typeorm/index.js";
 
 const app = express();
+connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
